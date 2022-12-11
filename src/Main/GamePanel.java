@@ -129,11 +129,6 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
 
-
-
-                 System.out.println("xH: " + horizontal.x + " y: " + horizontal.y);
-                 System.out.println("xV: " + vertical.x + " y: " + vertical.y);
-
                 player.bombs.remove(player.bombs.get(i));
             }
         }
