@@ -18,7 +18,6 @@ public class Player extends Entity {
     int numBoots = 0;
     int numBombs = 2;
     public int power;
-    public ArrayList<BubbleBomb> bombs = new ArrayList<BubbleBomb>();
 
 
     public Player(GamePanel gamePanel, KeyHandler key) {
@@ -114,12 +113,12 @@ public class Player extends Entity {
         BubbleBomb bomb = new BubbleBomb();
         bomb.x = gamePanel.tileSize * (Math.round((float) x / gamePanel.tileSize)); // bomb should be placed in middle of tile closest to player
         bomb.y = gamePanel.tileSize * (Math.round((float) y / gamePanel.tileSize));
-        for (int i = 0; i < bombs.size(); i++) {
-            if (bomb.x == bombs.get(i).x && bomb.y == bombs.get(i).y) {
+        for (int i = 0; i < gamePanel.bombs.size(); i++) {
+            if (bomb.x == gamePanel.bombs.get(i).x && bomb.y == gamePanel.bombs.get(i).y) {
               return;
             }
         }
-        bombs.add(bomb);
+        gamePanel.bombs.add(bomb);
         numBombs--;
     }
 
@@ -145,9 +144,9 @@ public class Player extends Entity {
                     System.out.println("Boots:" + numBoots);
                     break;
                 case "Bubble" :
-                    bombs.add(new BubbleBomb());
+                    gamePanel.bombs.add(new BubbleBomb());
                     gamePanel.item.remove(index);
-                    System.out.println("Bubbles:" + bombs.size());
+                    System.out.println("Bubbles:" + gamePanel.bombs.size());
                     break;
             }
         }

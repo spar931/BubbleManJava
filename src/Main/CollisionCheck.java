@@ -117,42 +117,42 @@ public class CollisionCheck {
     }
 
     public void checkBomb(Entity entity, boolean player) {
-        for (int i = 0; i < gamePanel.player.bombs.size(); i++) {
-            if (gamePanel.player.bombs.get(i) != null) {
+        for (int i = 0; i < gamePanel.bombs.size(); i++) {
+            if (gamePanel.bombs.get(i) != null) {
                 entity.solidArea.x = entity.x + entity.solidArea.x;
                 entity.solidArea.y = entity.y + entity.solidArea.y;
-                gamePanel.player.bombs.get(i).solidArea.x = gamePanel.player.bombs.get(i).x;
-                gamePanel.player.bombs.get(i).solidArea.y = gamePanel.player.bombs.get(i).y;
+                gamePanel.bombs.get(i).solidArea.x = gamePanel.bombs.get(i).x;
+                gamePanel.bombs.get(i).solidArea.y = gamePanel.bombs.get(i).y;
 
                 switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.player.bombs.get(i).solidArea)) { // check if the 2 rectangles are touching
-                            if (gamePanel.player.bombs.get(i).collision) {
+                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) { // check if the 2 rectangles are touching
+                            if (gamePanel.bombs.get(i).collision) {
                                 entity.collisionOn = true;
                             }
                         }
                         break;
                     case "down":
                         entity.solidArea.y += gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.player.bombs.get(i).solidArea)) {
-                            if (gamePanel.player.bombs.get(i).collision) {
+                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
+                            if (gamePanel.bombs.get(i).collision) {
                                 entity.collisionOn = true;
                             }
                         }
                         break;
                     case "left":
                         entity.solidArea.x -= gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.player.bombs.get(i).solidArea)) {
-                            if (gamePanel.player.bombs.get(i).collision) {
+                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
+                            if (gamePanel.bombs.get(i).collision) {
                                 entity.collisionOn = true;
                             }
                         }
                         break;
                     case "right":
                         entity.solidArea.x += gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.player.bombs.get(i).solidArea)) {
-                            if (gamePanel.player.bombs.get(i).collision) {
+                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
+                            if (gamePanel.bombs.get(i).collision) {
                                 entity.collisionOn = true;
                             }
                         }
@@ -160,8 +160,8 @@ public class CollisionCheck {
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                gamePanel.player.bombs.get(i).solidArea.x = gamePanel.player.bombs.get(i).solidAreaDefaultX;
-                gamePanel.player.bombs.get(i).solidArea.y = gamePanel.player.bombs.get(i).solidAreaDefaultY;
+                gamePanel.bombs.get(i).solidArea.x = gamePanel.bombs.get(i).solidAreaDefaultX;
+                gamePanel.bombs.get(i).solidArea.y = gamePanel.bombs.get(i).solidAreaDefaultY;
             }
         }
     }

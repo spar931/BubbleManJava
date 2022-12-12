@@ -87,24 +87,24 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
         player.update();
 
-        for (int i = 0; i < player.bombs.size(); i++) {
-            player.bombs.get(i).countdown();
-            if (player.bombs.get(i).exploded) {
+        for (int i = 0; i < this.bombs.size(); i++) {
+            this.bombs.get(i).countdown();
+            if (this.bombs.get(i).exploded) {
                 player.explode();
 
                 Explosion horizontal = new Explosion();
                 Explosion vertical = new Explosion();
 
                 //leftmost coordinate
-                horizontal.x = player.bombs.get(i).x - this.tileSize  * player.power;
-                horizontal.y = player.bombs.get(i).y;
+                horizontal.x = this.bombs.get(i).x - this.tileSize  * player.power;
+                horizontal.y = this.bombs.get(i).y;
                 if (horizontal.x < 0) {
                     horizontal.x = 0;
                 }
 
                 //topmost coordinate
-                vertical.x = player.bombs.get(i).x;
-                vertical.y = player.bombs.get(i).y - this.tileSize  * player.power;
+                vertical.x = this.bombs.get(i).x;
+                vertical.y = this.bombs.get(i).y - this.tileSize  * player.power;
                 if (vertical.y < 0) {
                     vertical.y = 0;
                 }
@@ -126,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable {
                         blockM.mapBlockNum[colV][rowV] = 2;
                     }
                     if (!blockM.block[blockNum].showExplosion) {
-                        if (player.bombs.get(i).y > j) {
+                        if (this.bombs.get(i).y > j) {
                             vertical.y += this.tileSize;
                         }
                         vertical.height -= this.tileSize;
@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements Runnable {
                         blockM.mapBlockNum[colH][rowH] = 2;
                     }
                     if (!blockM.block[blockNum].showExplosion) {
-                        if (player.bombs.get(i).x > t) {
+                        if (this.bombs.get(i).x > t) {
                             horizontal.x += this.tileSize;
                         }
                         horizontal.width -= this.tileSize;
@@ -151,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
 
-                player.bombs.remove(player.bombs.get(i));
+                this.bombs.remove(this.bombs.get(i));
             }
         }
 
@@ -179,8 +179,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2d);
 
-        for (int i = 0; i < player.bombs.size(); i++) {
-            player.bombs.get(i).draw(this, g2d);
+        for (int i = 0; i < this.bombs.size(); i++) {
+            this.bombs.get(i).draw(this, g2d);
         }
 
         for (int i = 0; i < explosions.size(); i++) {
