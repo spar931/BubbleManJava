@@ -25,15 +25,13 @@ public class Player extends Entity {
         this.gamePanel = gamePanel;
         this.key = key;
 
-        power = 1;
-
         solidArea = new Rectangle(); // creating small rectangle inside character to get in between walls smoothly
         solidArea.x = 8;
         solidArea.y = 16;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 32;
-        solidArea.height = 32;
+        solidArea.width = 20;
+        solidArea.height = 20;
 
         setDefaultValues();
         getPlayerImage();
@@ -44,6 +42,7 @@ public class Player extends Entity {
         x = gamePanel.tileSize;
         y = gamePanel.tileSize;
         speed = 4;
+        power = 1;
         direction = "down";
     }
 
@@ -190,6 +189,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-    g2d.drawImage(image, x, y, gamePanel.tileSize - 10, gamePanel.tileSize - 10, null);
+    g2d.drawImage(image, x, y, gamePanel.tileSize - (gamePanel.tileSize / 3), gamePanel.tileSize - (gamePanel.tileSize / 3), null);
     }
 }

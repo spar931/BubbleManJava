@@ -4,7 +4,6 @@ import Main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +27,8 @@ public class BlockManager {
             block[0] = new Block();
             block[0].image = ImageIO.read(getClass().getResourceAsStream("/Blocks/lego.png"));
             block[0].collision = true;
+            block[0].showExplosion = true;
+            block[0].canBeDestroyed = true;
 
             block[1] = new Block();
             block[1].image = ImageIO.read(getClass().getResourceAsStream("/Blocks/water2.png"));
@@ -35,10 +36,13 @@ public class BlockManager {
 
             block[2] = new Block();
             block[2].image = ImageIO.read(getClass().getResourceAsStream("/Blocks/legofloor.jpeg"));
+            block[2].showExplosion = true;
 
             block[3] = new Block();
             block[3].image = ImageIO.read(getClass().getResourceAsStream("/Blocks/legoOrange.png"));
             block[3].collision = true;
+            block[3].showExplosion = true;
+            block[3].canBeDestroyed = true;
 
             block[4] = new Block();
             block[4].image = ImageIO.read(getClass().getResourceAsStream("/Blocks/hut.png"));

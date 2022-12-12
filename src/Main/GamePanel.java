@@ -98,10 +98,16 @@ public class GamePanel extends JPanel implements Runnable {
                 //leftmost coordinate
                 horizontal.x = player.bombs.get(i).x - this.tileSize  * player.power;
                 horizontal.y = player.bombs.get(i).y;
+                if (horizontal.x < 0) {
+                    horizontal.x = 0;
+                }
 
                 //topmost coordinate
                 vertical.x = player.bombs.get(i).x;
                 vertical.y = player.bombs.get(i).y - this.tileSize  * player.power;
+                if (vertical.y < 0) {
+                    vertical.y = 0;
+                }
 
                 horizontal.width = this.tileSize * (player.power * 2 + 1);
                 vertical.height = this.tileSize * (player.power * 2 + 1);
@@ -109,23 +115,39 @@ public class GamePanel extends JPanel implements Runnable {
                 explosions.add(horizontal);
                 explosions.add(vertical);
 
+                // destroying blocks on contact with explosion, only show explosion if explosion on floor or destroyable block
                 // col stays the same per explosion
                 int colV = vertical.x / this.tileSize;
+
                 for (int j = vertical.y; j < vertical.y + vertical.height; j += this.tileSize) {
-                    int row = j / this.tileSize;
-                    int blockNum = blockM.mapBlockNum[colV][row];
-                    if (blockNum == 0 || blockNum == 3) { // to later give breakable blocks a separate property
-                        blockM.mapBlockNum[colV][row] = 2;
+                    int rowV = j / this.tileSize;
+                    int blockNum = blockM.mapBlockNum[colV][rowV];
+                    if (blockM.block[blockNum].canBeDestroyed) {
+                        blockM.mapBlockNum[colV][rowV] = 2;
+                    }
+                    if (!blockM.block[blockNum].showExplosion) {
+                        if (player.bombs.get(i).y > j) {
+                            vertical.y += this.tileSize;
+                        }
+                        vertical.height -= this.tileSize;
                     }
                 }
 
                 // col changes per explosion
                 int rowH = horizontal.y / this.tileSize;
+
                 for (int t = horizontal.x; t < horizontal.x + horizontal.width; t += this.tileSize) {
                     int colH = t / this.tileSize;
                     int blockNum = blockM.mapBlockNum[colH][rowH];
-                    if (blockNum == 0 || blockNum == 3) { // to later give breakable blocks a separate property
+                    if (blockM.block[blockNum].canBeDestroyed) {
                         blockM.mapBlockNum[colH][rowH] = 2;
+                    }
+                    if (!blockM.block[blockNum].showExplosion) {
+                        if (player.bombs.get(i).x > t) {
+                            horizontal.x += this.tileSize;
+                        }
+                        horizontal.width -= this.tileSize;
+
                     }
                 }
 

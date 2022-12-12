@@ -6,4 +6,6 @@ import java.awt.image.BufferedImage;
 public class Block {
     public BufferedImage image;
     public boolean collision = false;
+    public boolean showExplosion = false;
+    public boolean canBeDestroyed = false;
 }
