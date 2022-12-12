@@ -3,6 +3,8 @@
 Still a work in progress... 
 Simply run Main to run the game.
 
+src folder contains class implementations, res folder contains images used in the game and mapdata.txt.
+
 Recreating a game I played in my childhood called "Crazy Arcade".
 
 
