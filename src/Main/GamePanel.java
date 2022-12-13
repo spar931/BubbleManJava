@@ -45,7 +45,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void gameSetUp() {
-        assetSetter.setItem();
         playMusic(0);
     }
 
@@ -95,22 +94,28 @@ public class GamePanel extends JPanel implements Runnable {
                 Explosion horizontal = new Explosion();
                 Explosion vertical = new Explosion();
 
-                //leftmost coordinate
-                horizontal.x = this.bombs.get(i).x - this.tileSize  * player.power;
+                horizontal.width = this.tileSize * (player.numPotions * 2 + 1);
+                vertical.height = this.tileSize * (player.numPotions * 2 + 1);
+
+                // leftmost coordinate
+                horizontal.x = this.bombs.get(i).x - this.tileSize  * player.numPotions;
                 horizontal.y = this.bombs.get(i).y;
                 if (horizontal.x < 0) {
                     horizontal.x = 0;
                 }
+                if (horizontal.x + horizontal.width > screenWidth) {
+                    horizontal.width -= horizontal.x + horizontal.width - screenWidth;
+                }
 
-                //topmost coordinate
+                // topmost coordinate
                 vertical.x = this.bombs.get(i).x;
-                vertical.y = this.bombs.get(i).y - this.tileSize  * player.power;
+                vertical.y = this.bombs.get(i).y - this.tileSize  * player.numPotions;
                 if (vertical.y < 0) {
                     vertical.y = 0;
                 }
-
-                horizontal.width = this.tileSize * (player.power * 2 + 1);
-                vertical.height = this.tileSize * (player.power * 2 + 1);
+                if (vertical.y + vertical.height > screenHeight) {
+                    vertical.height -= vertical.y + vertical.height - screenHeight;
+                }
 
                 explosions.add(horizontal);
                 explosions.add(vertical);
@@ -124,6 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
                     int blockNum = blockM.mapBlockNum[colV][rowV];
                     if (blockM.block[blockNum].canBeDestroyed) {
                         blockM.mapBlockNum[colV][rowV] = 2;
+                        assetSetter.setItem(colV * this.tileSize, rowV * this.tileSize);
                     }
                     if (!blockM.block[blockNum].showExplosion) {
                         if (this.bombs.get(i).y > j) {
@@ -141,14 +147,15 @@ public class GamePanel extends JPanel implements Runnable {
                     int blockNum = blockM.mapBlockNum[colH][rowH];
                     if (blockM.block[blockNum].canBeDestroyed) {
                         blockM.mapBlockNum[colH][rowH] = 2;
+                        assetSetter.setItem(colH * this.tileSize, rowH * this.tileSize);
                     }
                     if (!blockM.block[blockNum].showExplosion) {
                         if (this.bombs.get(i).x > t) {
                             horizontal.x += this.tileSize;
                         }
                         horizontal.width -= this.tileSize;
-
                     }
+
                 }
 
                 this.bombs.remove(this.bombs.get(i));
@@ -172,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
         blockM.draw(g2d);
 
         for (int i = 0; i < item.size(); i++) {
-            if(item.get(i) != null) {
+            if (item.get(i) != null) {
                 item.get(i).draw(this, g2d);
             }
         }

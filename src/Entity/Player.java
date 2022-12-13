@@ -8,16 +8,14 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler key;
-    int numPotions = 0; // how many potions a player has picked up
     int numBoots = 0;
     int numBombs = 2;
-    public int power;
+    public int numPotions;
 
 
     public Player(GamePanel gamePanel, KeyHandler key) {
@@ -39,9 +37,9 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         x = gamePanel.tileSize;
-        y = gamePanel.tileSize;
-        speed = 4;
-        power = 1;
+        y = gamePanel.tileSize * 10;
+        speed = 3;
+        numPotions = 1;
         direction = "down";
     }
 
@@ -132,21 +130,27 @@ public class Player extends Entity {
             switch(itemName) { // to add bubbles, boots and other items. Will need an if statement for bubbles, as it should only work when bubbles are available
                 case "Potion" :
                     gamePanel.playSE(2);
-                    numPotions++;
+                    if (numPotions < 6) {
+                        numPotions++;
+                    }
                     gamePanel.item.remove(index); // make touched item disappear
                     System.out.println("Potions:" + numPotions);
                     break;
                 case "Boots" :
                     gamePanel.playSE(3);
-                    numBoots++;
+                    if (numBoots < 2) {
+                        numBoots++;
+                    }
                     speed += 2;
                     gamePanel.item.remove(index);
                     System.out.println("Boots:" + numBoots);
                     break;
                 case "Bubble" :
-                    gamePanel.bombs.add(new BubbleBomb());
+                    if (numBombs < 6) {
+                        numBombs++;
+                    }
                     gamePanel.item.remove(index);
-                    System.out.println("Bubbles:" + gamePanel.bombs.size());
+                    System.out.println("Bombs:" + numBombs);
                     break;
             }
         }
