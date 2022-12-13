@@ -37,8 +37,8 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         x = gamePanel.tileSize;
-        y = gamePanel.tileSize * 10;
-        speed = 3;
+        y = gamePanel.tileSize;
+        speed = 2;
         numPotions = 1;
         direction = "down";
     }
