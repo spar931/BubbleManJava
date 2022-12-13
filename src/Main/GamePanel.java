@@ -123,7 +123,6 @@ public class GamePanel extends JPanel implements Runnable {
                 // destroying blocks on contact with explosion, only show explosion if explosion on floor or destroyable block
                 // col stays the same per explosion
                 int colV = vertical.x / this.tileSize;
-
                 for (int j = vertical.y; j < vertical.y + vertical.height; j += this.tileSize) {
                     int rowV = j / this.tileSize;
                     int blockNum = blockM.mapBlockNum[colV][rowV];

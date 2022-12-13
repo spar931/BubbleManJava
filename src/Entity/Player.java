@@ -138,10 +138,10 @@ public class Player extends Entity {
                     break;
                 case "Boots" :
                     gamePanel.playSE(3);
-                    if (numBoots < 2) {
+                    if (numBoots < 4) {
                         numBoots++;
+                        speed += 1;
                     }
-                    speed += 2;
                     gamePanel.item.remove(index);
                     System.out.println("Boots:" + numBoots);
                     break;
