@@ -21,7 +21,7 @@ public class Assets {
     public void setItem(int x, int y) {
         int randomNumber = rand.nextInt(10);
         SuperItem item = null;
-        if (randomNumber == 0 || randomNumber == 9) {
+        if (randomNumber == 0) {
             item = new ITEM_bomb();
         } else if (randomNumber == 1) {
             item = new ITEM_boots();
