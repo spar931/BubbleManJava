@@ -9,6 +9,7 @@ import Item.SuperItem;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.lang.Math;
 
 public class GamePanel extends JPanel implements Runnable {
     //Screen settings
@@ -86,78 +87,87 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
         player.update();
 
-        for (int i = 0; i < this.bombs.size(); i++) {
+        for (int i = 0; i < bombs.size(); i++) {
             this.bombs.get(i).countdown();
-            if (this.bombs.get(i).exploded) {
+            if (bombs.get(i).exploded) {
                 player.explode();
 
-                Explosion horizontal = new Explosion();
-                Explosion vertical = new Explosion();
+                Explosion horizontal = new Explosion(bombs.get(i).x, bombs.get(i).y);
+                Explosion vertical = new Explosion(bombs.get(i).x, bombs.get(i).y);
 
-                horizontal.width = this.tileSize * (player.numPotions * 2 + 1);
-                vertical.height = this.tileSize * (player.numPotions * 2 + 1);
-
-                // leftmost coordinate
-                horizontal.x = this.bombs.get(i).x - this.tileSize  * player.numPotions;
-                horizontal.y = this.bombs.get(i).y;
-                if (horizontal.x < 0) {
-                    horizontal.x = 0;
-                }
-                if (horizontal.x + horizontal.width > screenWidth) {
-                    horizontal.width -= horizontal.x + horizontal.width - screenWidth;
-                }
-
-                // topmost coordinate
-                vertical.x = this.bombs.get(i).x;
-                vertical.y = this.bombs.get(i).y - this.tileSize  * player.numPotions;
-                if (vertical.y < 0) {
-                    vertical.y = 0;
-                }
-                if (vertical.y + vertical.height > screenHeight) {
-                    vertical.height -= vertical.y + vertical.height - screenHeight;
+                int checkTileY = bombs.get(i).y;
+                // top explosion
+                for (int q = 0; q < player.numPotions; q++) {
+                    checkTileY -= tileSize;
+                    int blockNum = blockM.mapBlockNum[vertical.x / tileSize][checkTileY / tileSize];
+                    if (blockNum == 2) {
+                        vertical.y -= tileSize;
+                    } else if (blockM.block[blockNum].canBeDestroyed) {
+                        vertical.y -= tileSize;
+                        blockM.mapBlockNum[vertical.x / tileSize][checkTileY / tileSize] = 2;
+                        assetSetter.setItem(vertical.x, checkTileY);
+                        break;
+                    } else {
+                        break;
+                    }
                 }
 
+                checkTileY = bombs.get(i).y;
+                vertical.height = tileSize + Math.abs(vertical.y - bombs.get(i).y);
+                // bottom explosion
+                for (int q = 0; q < player.numPotions; q++) {
+                    checkTileY += tileSize;
+                    int blockNum = blockM.mapBlockNum[vertical.x / tileSize][checkTileY / tileSize];
+                    if (blockNum == 2) {
+                        vertical.height += tileSize;
+                    } else if (blockM.block[blockNum].canBeDestroyed) {
+                        vertical.height += tileSize;
+                        blockM.mapBlockNum[vertical.x / tileSize][checkTileY / tileSize] = 2;
+                        assetSetter.setItem(vertical.x, checkTileY);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+
+
+                int checkTileX = bombs.get(i).x;
+                // left explosion
+                for (int q = 0; q < player.numPotions; q++) {
+                    checkTileX -= tileSize;
+                    int blockNum = blockM.mapBlockNum[checkTileX / tileSize][horizontal.y / tileSize];
+                    if (blockNum == 2) {
+                        horizontal.x -= tileSize;
+                    } else if (blockM.block[blockNum].canBeDestroyed) {
+                        horizontal.x -= tileSize;
+                        blockM.mapBlockNum[checkTileX / tileSize][horizontal.y / tileSize] = 2;
+                        assetSetter.setItem(checkTileX, horizontal.y);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+
+                checkTileX = bombs.get(i).x;
+                horizontal.width = tileSize + Math.abs(horizontal.x - bombs.get(i).x);
+                // right explosion
+                for (int q = 0; q < player.numPotions; q++) {
+                    checkTileX += tileSize;
+                    int blockNum = blockM.mapBlockNum[checkTileX / tileSize][horizontal.y / tileSize];
+                    if (blockNum == 2) {
+                        horizontal.width += tileSize;
+                    } else if (blockM.block[blockNum].canBeDestroyed) {
+                        horizontal.width += tileSize;
+                        blockM.mapBlockNum[checkTileX / tileSize][horizontal.y / tileSize] = 2;
+                        assetSetter.setItem(checkTileX, horizontal.y);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
                 explosions.add(horizontal);
                 explosions.add(vertical);
-
-                // destroying blocks on contact with explosion, only show explosion if explosion on floor or destroyable block
-                // col stays the same per explosion
-                int colV = vertical.x / this.tileSize;
-                for (int j = vertical.y; j < vertical.y + vertical.height; j += this.tileSize) {
-                    int rowV = j / this.tileSize;
-                    int blockNum = blockM.mapBlockNum[colV][rowV];
-                    if (blockM.block[blockNum].canBeDestroyed) {
-                        blockM.mapBlockNum[colV][rowV] = 2;
-                        assetSetter.setItem(colV * this.tileSize, rowV * this.tileSize);
-                    }
-                    if (!blockM.block[blockNum].showExplosion) {
-                        if (this.bombs.get(i).y > j) {
-                            vertical.y += this.tileSize;
-                        }
-                        vertical.height -= this.tileSize;
-                    }
-                }
-
-                // col changes per explosion
-                int rowH = horizontal.y / this.tileSize;
-
-                for (int t = horizontal.x; t < horizontal.x + horizontal.width; t += this.tileSize) {
-                    int colH = t / this.tileSize;
-                    int blockNum = blockM.mapBlockNum[colH][rowH];
-                    if (blockM.block[blockNum].canBeDestroyed) {
-                        blockM.mapBlockNum[colH][rowH] = 2;
-                        assetSetter.setItem(colH * this.tileSize, rowH * this.tileSize);
-                    }
-                    if (!blockM.block[blockNum].showExplosion) {
-                        if (this.bombs.get(i).x > t) {
-                            horizontal.x += this.tileSize;
-                        }
-                        horizontal.width -= this.tileSize;
-                    }
-
-                }
-
-                this.bombs.remove(this.bombs.get(i));
+                bombs.remove(bombs.get(i));
             }
         }
 
