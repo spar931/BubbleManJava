@@ -13,8 +13,8 @@ import java.util.Objects;
 public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler key;
-    int numBoots = 0;
-    int numBombs = 2;
+    private int numBoots;
+    public int numBombs;
     public int numPotions;
 
 
@@ -40,6 +40,7 @@ public class Player extends Entity {
         y = gamePanel.tileSize;
         speed = 2;
         numPotions = 1;
+        numBombs = 1;
         direction = "down";
     }
 
@@ -120,8 +121,8 @@ public class Player extends Entity {
         numBombs--;
     }
 
-    public void explode() {
-        numBombs++;
+    public void restoreBomb() {
+        gamePanel.player.numBombs++;
     }
 
     public void pickUpItem(int index) {
