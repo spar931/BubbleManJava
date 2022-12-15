@@ -91,13 +91,13 @@ public class GamePanel extends JPanel implements Runnable {
             if (bombs.get(i).exploded) {
                 player.restoreBomb();
 
-                // Create bomb explosions
                 Explosion horizontal = new Explosion(bombs.get(i).x, bombs.get(i).y);
                 Explosion vertical = new Explosion(bombs.get(i).x, bombs.get(i).y);
                 horizontal.createHorizontalExplosion(bombs.get(i), blockM, assetSetter, player);
                 vertical.createVerticalExplosion(bombs.get(i), blockM, assetSetter, player);
                 explosions.add(horizontal);
                 explosions.add(vertical);
+
                 bombs.remove(bombs.get(i));
             }
         }

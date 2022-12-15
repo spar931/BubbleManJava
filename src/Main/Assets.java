@@ -1,8 +1,7 @@
 package Main;
 
-import Bomb.BubbleBomb;
 import Item.ITEM_boots;
-import Item.ITEM_bubble;
+import Item.ITEM_bomb;
 import Item.ITEM_potion;
 import Item.SuperItem;
 
@@ -23,7 +22,7 @@ public class Assets {
         int randomNumber = rand.nextInt(10);
         SuperItem item = null;
         if (randomNumber == 0 || randomNumber == 9) {
-            item = new ITEM_bubble();
+            item = new ITEM_bomb();
         } else if (randomNumber == 1) {
             item = new ITEM_boots();
         } else if (randomNumber == 2) {
