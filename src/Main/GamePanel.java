@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     public BlockManager blockM = new BlockManager(this);
     public ArrayList<SuperItem> item = new ArrayList<SuperItem>();
     public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
-    public ArrayList<BubbleBomb> bombs = new ArrayList<BubbleBomb>();
+    public ArrayList<SuperItem> bombs = new ArrayList<SuperItem>();
     public Assets assetSetter = new Assets(this);
 
     Sound music = new Sound();
@@ -87,18 +87,19 @@ public class GamePanel extends JPanel implements Runnable {
         player.update();
 
         for (int i = 0; i < bombs.size(); i++) {
-            this.bombs.get(i).countdown();
-            if (bombs.get(i).exploded) {
+            BubbleBomb bomb = (BubbleBomb) bombs.get(i);
+            bomb.countdown();
+            if (bomb.exploded) {
                 player.restoreBomb();
 
-                Explosion horizontal = new Explosion(bombs.get(i).x, bombs.get(i).y);
-                Explosion vertical = new Explosion(bombs.get(i).x, bombs.get(i).y);
-                horizontal.createHorizontalExplosion(bombs.get(i), blockM, assetSetter, player);
-                vertical.createVerticalExplosion(bombs.get(i), blockM, assetSetter, player);
+                Explosion horizontal = new Explosion(bomb.x, bomb.y);
+                Explosion vertical = new Explosion(bomb.x, bomb.y);
+                horizontal.createHorizontalExplosion(bomb, blockM, assetSetter, player);
+                vertical.createVerticalExplosion(bomb, blockM, assetSetter, player);
                 explosions.add(horizontal);
                 explosions.add(vertical);
 
-                bombs.remove(bombs.get(i));
+                bombs.remove(bomb);
             }
         }
 
@@ -125,8 +126,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2d);
 
-        for (int i = 0; i < this.bombs.size(); i++) {
-            this.bombs.get(i).draw(this, g2d);
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).draw(this, g2d);
         }
 
         for (int i = 0; i < explosions.size(); i++) {

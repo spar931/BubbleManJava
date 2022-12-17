@@ -1,6 +1,10 @@
 package Main;
 
+import Bomb.BubbleBomb;
 import Entity.Entity;
+import Item.SuperItem;
+
+import java.util.ArrayList;
 
 public class CollisionCheck {
     GamePanel gamePanel;
@@ -58,49 +62,65 @@ public class CollisionCheck {
         }
     }
 
-    public int checkItem(Entity entity, boolean player) {
+    public int checkItem(Entity entity, boolean player, ArrayList<SuperItem> items) {
         int index = 9999;
-        for (int i = 0; i < gamePanel.item.size(); i++) {
-            if (gamePanel.item.get(i) != null) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i) != null) {
                 // entity's solid area position
                 entity.solidArea.x = entity.x + entity.solidArea.x;
                 entity.solidArea.y = entity.y + entity.solidArea.y;
                 // item's solid area position
-                gamePanel.item.get(i).solidArea.x = gamePanel.item.get(i).x + gamePanel.item.get(i).solidArea.x;
-                gamePanel.item.get(i).solidArea.y = gamePanel.item.get(i).y + gamePanel.item.get(i).solidArea.y;
+                items.get(i).solidArea.x = items.get(i).x + items.get(i).solidArea.x;
+                items.get(i).solidArea.y = items.get(i).y + items.get(i).solidArea.y;
 
                 switch (entity.direction) {
                     case "up":
-                        entity.solidArea.y -= entity.speed;
-                        if (entity.solidArea.intersects(gamePanel.item.get(i).solidArea)) { // check if the 2 rectangles are touching
-                            if (gamePanel.item.get(i).collision)
+                        if (items.get(i) instanceof BubbleBomb) {
+                            entity.solidArea.y -= gamePanel.tileSize;
+                        } else {
+                            entity.solidArea.y -= entity.speed;
+                        }
+                        if (entity.solidArea.intersects(items.get(i).solidArea)) { // check if the 2 rectangles are touching
+                            if (items.get(i).collision)
                                 entity.collisionOn = true;
                             if (player) // interaction should only happen when a player (not another entity) collides with item
                                 index = i;
                         }
                         break;
                     case "down":
-                        entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(gamePanel.item.get(i).solidArea)) {
-                            if (gamePanel.item.get(i).collision)
+                        if (items.get(i) instanceof BubbleBomb) {
+                            entity.solidArea.y += gamePanel.tileSize;
+                        } else {
+                            entity.solidArea.y += entity.speed;
+                        }
+                        if (entity.solidArea.intersects(items.get(i).solidArea)) {
+                            if (items.get(i).collision)
                                 entity.collisionOn = true;
                             if (player)
                                 index = i;
                         }
                         break;
                     case "left":
-                        entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(gamePanel.item.get(i).solidArea)) {
-                            if (gamePanel.item.get(i).collision)
+                        if (items.get(i) instanceof BubbleBomb) {
+                            entity.solidArea.x -= gamePanel.tileSize;
+                        } else {
+                            entity.solidArea.x -= entity.speed;
+                        }
+                        if (entity.solidArea.intersects(items.get(i).solidArea)) {
+                            if (items.get(i).collision)
                                 entity.collisionOn = true;
                             if (player)
                                 index = i;
                         }
                         break;
                     case "right":
-                        entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(gamePanel.item.get(i).solidArea)) {
-                            if (gamePanel.item.get(i).collision)
+                        if (items.get(i) instanceof BubbleBomb) {
+                            entity.solidArea.x += gamePanel.tileSize;
+                        } else {
+                            entity.solidArea.x += entity.speed;
+                        }
+                        if (entity.solidArea.intersects(items.get(i).solidArea)) {
+                            if (items.get(i).collision)
                                 entity.collisionOn = true;
                             if (player) // interaction should only happen when a player collides with item
                                 index = i;
@@ -109,61 +129,11 @@ public class CollisionCheck {
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                gamePanel.item.get(i).solidArea.x = gamePanel.item.get(i).solidAreaDefaultX;
-                gamePanel.item.get(i).solidArea.y = gamePanel.item.get(i).solidAreaDefaultY;
+                items.get(i).solidArea.x = items.get(i).solidAreaDefaultX;
+                items.get(i).solidArea.y = items.get(i).solidAreaDefaultY;
             }
         }
         return index;
-    }
-
-    public void checkBomb(Entity entity, boolean player) {
-        for (int i = 0; i < gamePanel.bombs.size(); i++) {
-            if (gamePanel.bombs.get(i) != null) {
-                entity.solidArea.x = entity.x + entity.solidArea.x;
-                entity.solidArea.y = entity.y + entity.solidArea.y;
-                gamePanel.bombs.get(i).solidArea.x = gamePanel.bombs.get(i).x;
-                gamePanel.bombs.get(i).solidArea.y = gamePanel.bombs.get(i).y;
-
-                switch (entity.direction) {
-                    case "up":
-                        entity.solidArea.y -= gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) { // check if the 2 rectangles are touching
-                            if (gamePanel.bombs.get(i).collision) {
-                                entity.collisionOn = true;
-                            }
-                        }
-                        break;
-                    case "down":
-                        entity.solidArea.y += gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
-                            if (gamePanel.bombs.get(i).collision) {
-                                entity.collisionOn = true;
-                            }
-                        }
-                        break;
-                    case "left":
-                        entity.solidArea.x -= gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
-                            if (gamePanel.bombs.get(i).collision) {
-                                entity.collisionOn = true;
-                            }
-                        }
-                        break;
-                    case "right":
-                        entity.solidArea.x += gamePanel.tileSize;
-                        if (entity.solidArea.intersects(gamePanel.bombs.get(i).solidArea)) {
-                            if (gamePanel.bombs.get(i).collision) {
-                                entity.collisionOn = true;
-                            }
-                        }
-                        break;
-                }
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gamePanel.bombs.get(i).solidArea.x = gamePanel.bombs.get(i).solidAreaDefaultX;
-                gamePanel.bombs.get(i).solidArea.y = gamePanel.bombs.get(i).solidAreaDefaultY;
-            }
-        }
     }
 }
 

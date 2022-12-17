@@ -14,7 +14,7 @@ public class SuperItem {
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     public int width = gamePanel.tileSize, height = gamePanel.tileSize;
-    public Rectangle solidArea = new Rectangle(solidAreaDefaultX, solidAreaDefaultY, gamePanel.tileSize, gamePanel.tileSize);
+    public Rectangle solidArea = new Rectangle(solidAreaDefaultX, solidAreaDefaultY, width, height);
 
     public void draw(GamePanel gamePanel, Graphics2D g2d) {
         g2d.drawImage(image, x, y, width, height, null);

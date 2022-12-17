@@ -27,8 +27,8 @@ public class Player extends Entity {
         solidArea.y = 16;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 20;
-        solidArea.height = 20;
+        solidArea.width = 16;
+        solidArea.height = 16;
 
         setDefaultValues();
         getPlayerImage();
@@ -76,11 +76,11 @@ public class Player extends Entity {
             gamePanel.collisionC.checkBlock(this);
 
             // check item collision
-            int itemIndex = gamePanel.collisionC.checkItem(this, true);
+            int itemIndex = gamePanel.collisionC.checkItem(this, true, gamePanel.item);
             pickUpItem(itemIndex);
 
             // check bomb collision
-            gamePanel.collisionC.checkBomb(this, true);
+            gamePanel.collisionC.checkItem(this, true, gamePanel.bombs);
 
             if (!collisionOn) {
                 switch (direction) {

@@ -1,9 +1,7 @@
 package Bomb;
 
-import Blocks.Block;
 import Entity.Player;
 import Blocks.BlockManager;
-import Entity.Entity;
 import Item.SuperItem;
 import Main.Assets;
 
@@ -32,8 +30,8 @@ public class Explosion extends SuperItem {
             explosionTime = 0;
         }
     }
-    
-    public void createVerticalExplosion(BubbleBomb bomb, BlockManager blockM, Assets assetSetter, Player player) {
+
+    public void createVerticalExplosion(SuperItem bomb, BlockManager blockM, Assets assetSetter, Player player) {
         int checkTileY = bomb.y;
         // top explosion
         for (int q = 0; q < player.numPotions; q++) {
@@ -70,7 +68,7 @@ public class Explosion extends SuperItem {
         }
     }
 
-    public void createHorizontalExplosion(BubbleBomb bomb, BlockManager blockM, Assets assetSetter, Player player) {
+    public void createHorizontalExplosion(SuperItem bomb, BlockManager blockM, Assets assetSetter, Player player) {
         int checkTileX = bomb.x;
         // left explosion
         for (int q = 0; q < player.numPotions; q++) {
