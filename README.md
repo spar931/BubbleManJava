@@ -2,6 +2,7 @@
 
 Still a work in progress... 
 Simply run Main to run the game.
+WASD to move and SPACEBAR to plant a bomb. Destroy blocks for a chance to get a power up.
 
 src folder contains class implementations, res folder contains images used in the game and mapdata.txt.
 
